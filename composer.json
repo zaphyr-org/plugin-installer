@@ -1,0 +1,63 @@
+{
+    "name": "zaphyr-org/plugin-installer",
+    "type": "composer-plugin",
+    "description": "A Composer plugin to install ZAPHYR plugins.",
+    "keywords": [
+        "composer",
+        "plugin",
+        "zaphyr"
+    ],
+    "license": "MIT",
+    "homepage": "https://zaphyr.org",
+    "authors": [
+        {
+            "name": "merloxx",
+            "email": "merloxx@zaphyr.org",
+            "homepage": "https://merloxx.dev",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=8.1",
+        "composer-plugin-api": "^2.6",
+        "symfony/yaml": "^6.2",
+        "zaphyr-org/utils": "^2.2"
+    },
+    "require-dev": {
+        "composer/composer": "^2.6",
+        "phpstan/phpstan": "^1.10",
+        "phpunit/phpunit": "^10.0",
+        "roave/security-advisories": "dev-latest",
+        "squizlabs/php_codesniffer": "^4.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Zaphyr\\PluginInstaller\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Zaphyr\\PluginInstallerTests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "cs": "vendor/bin/phpcs --standard=PSR12 -n src",
+        "cbf": "vendor/bin/phpcbf --standard=PSR12 -n src",
+        "phpunit": "vendor/bin/phpunit --colors=always",
+        "phpstan": "vendor/bin/phpstan analyse --memory-limit 512M",
+        "test": [
+            "@phpunit",
+            "@phpstan",
+            "@cs"
+        ]
+    },
+    "config": {
+        "sort-packages": true,
+        "optimize-autoloader": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "extra": {
+        "class": "Zaphyr\\PluginInstaller\\PluginInstaller"
+    }
+}

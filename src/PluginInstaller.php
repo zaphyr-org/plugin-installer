@@ -1,0 +1,151 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Zaphyr\PluginInstaller;
+
+use Composer\Composer;
+use Composer\DependencyResolver\Operation\InstallOperation;
+use Composer\DependencyResolver\Operation\UpdateOperation;
+use Composer\EventDispatcher\EventSubscriberInterface;
+use Composer\Factory;
+use Composer\Installer\PackageEvent;
+use Composer\Installer\PackageEvents;
+use Composer\IO\IOInterface;
+use Composer\Plugin\PluginInterface;
+use Zaphyr\Framework\ApplicationPathResolver;
+use Zaphyr\Framework\Exceptions\FrameworkException;
+use Zaphyr\PluginInstaller\Types\Plugin;
+use Zaphyr\PluginInstaller\Types\PluginUpdate;
+
+/**
+ * @author merloxx <merloxx@zaphyr.org>
+ */
+class PluginInstaller implements PluginInterface, EventSubscriberInterface
+{
+    /**
+     * @const string
+     */
+    private const ZAPHYR_PLUGIN_TYPE = 'zaphyr-plugin';
+
+    /**
+     * @var OperationsResolver
+     */
+    private OperationsResolver $operationsResolver;
+
+    /**
+     * {@inheritdoc}
+     *
+     * @throws FrameworkException if unable to determine the root path.
+     */
+    public function activate(Composer $composer, IOInterface $io): void
+    {
+        $applicationPathResolver = $this->getApplicationPathResolver($composer);
+
+        $this->operationsResolver = new OperationsResolver($applicationPathResolver);
+    }
+
+    /**
+     * @param Composer $composer
+     *
+     * @throws FrameworkException if unable to determine the root path.
+     * @return ApplicationPathResolver
+     */
+    private function getApplicationPathResolver(Composer $composer): ApplicationPathResolver
+    {
+        $paths = $composer->getPackage()->getExtra()['zaphyr']['paths'] ?? [];
+        $paths['root'] ??= realpath(dirname(Factory::getComposerFile()));
+
+        return new ApplicationPathResolver($paths);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function deactivate(Composer $composer, IOInterface $io): void
+    {
+        // @todo Implement deactivate() method.
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function uninstall(Composer $composer, IOInterface $io): void
+    {
+        // @todo Implement uninstall() method.
+    }
+
+    /**
+     * @param PackageEvent $packageEvent
+     *
+     * @return void
+     */
+    public function installPlugin(PackageEvent $packageEvent): void
+    {
+        $this->execute($packageEvent, 'install');
+    }
+
+    /**
+     * @param PackageEvent $packageEvent
+     *
+     * @return void
+     */
+    public function updatePlugin(PackageEvent $packageEvent): void
+    {
+        /** @var UpdateOperation $operation */
+        $operation = $packageEvent->getOperation();
+        $targetPackage = $operation->getTargetPackage();
+
+        if ($targetPackage->getType() !== self::ZAPHYR_PLUGIN_TYPE) {
+            return;
+        }
+
+        $initialPackage = $operation->getInitialPackage();
+
+        $currentPlugin = new Plugin($initialPackage);
+        $newPlugin = new Plugin($targetPackage);
+
+        $this->operationsResolver->update(new PluginUpdate($currentPlugin, $newPlugin));
+    }
+
+    /**
+     * @param PackageEvent $packageEvent
+     *
+     * @return void
+     */
+    public function uninstallPlugin(PackageEvent $packageEvent): void
+    {
+        $this->execute($packageEvent, 'uninstall');
+    }
+
+    /**
+     * @param PackageEvent $event
+     * @param string       $type
+     *
+     * @return void
+     */
+    private function execute(PackageEvent $event, string $type): void
+    {
+        /** @var InstallOperation $operation */
+        $operation = $event->getOperation();
+        $package = $operation->getPackage();
+
+        if ($package->getType() !== self::ZAPHYR_PLUGIN_TYPE) {
+            return;
+        }
+
+        $this->operationsResolver->$type(new Plugin($package));
+    }
+
+    /**
+     * @return string[]
+     */
+    public static function getSubscribedEvents(): array
+    {
+        return [
+            PackageEvents::POST_PACKAGE_INSTALL => 'installPlugin',
+            PackageEvents::POST_PACKAGE_UPDATE => 'updatePlugin',
+            PackageEvents::POST_PACKAGE_UNINSTALL => 'uninstallPlugin',
+        ];
+    }
+}
