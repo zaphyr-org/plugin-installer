@@ -135,8 +135,8 @@ class PluginClassesOperator extends AbstractOperator
             return;
         }
 
-        if (!is_dir($pluginConfigDir)) {
-            File::createDirectory($pluginConfigDir);
+        if (!is_dir($pluginConfigDir) && !File::createDirectory($pluginConfigDir)) {
+            $this->writeWarning("Could not create directory $pluginConfigDir");
         }
 
         file_put_contents($pluginClassesFile, Yaml::dump($classes));
