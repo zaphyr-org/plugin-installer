@@ -27,6 +27,16 @@ class PluginTest extends TestCase
     }
 
     /* -------------------------------------------------
+     * GET PACKAGE
+     * -------------------------------------------------
+     */
+
+    public function testGetPackage(): void
+    {
+        self::assertSame($this->packageMock, $this->plugin->getPackage());
+    }
+
+    /* -------------------------------------------------
      * HAS EXTRA
      * -------------------------------------------------
      */
@@ -65,6 +75,20 @@ class PluginTest extends TestCase
             ->willReturn(['plugin-classes' => ['foo' => 'bar']]);
 
         self::assertSame(['foo' => 'bar'], $this->plugin->getClasses());
+        self::assertSame([], $this->plugin->getExtra('foo'));
+    }
+
+    /* -------------------------------------------------
+     * GET COPY PATHS
+     * -------------------------------------------------
+     */
+
+    public function testGetCopyPaths(): void
+    {
+        $this->packageMock->method('getExtra')
+            ->willReturn(['copy' => ['foo' => 'bar']]);
+
+        self::assertSame(['foo' => 'bar'], $this->plugin->getCopyPaths());
         self::assertSame([], $this->plugin->getExtra('foo'));
     }
 }

@@ -12,13 +12,10 @@ use Composer\IO\IOInterface;
 use Composer\Package\Package;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Zaphyr\Framework\Contracts\ApplicationPathResolverInterface;
 use Zaphyr\PluginInstaller\PluginInstaller;
 
 class PluginInstallerTest extends TestCase
 {
-    protected ApplicationPathResolverInterface&MockObject $applicationPathResolverMock;
-
     protected Composer&MockObject $composerMock;
 
     protected IOInterface&MockObject $ioMock;
@@ -35,7 +32,6 @@ class PluginInstallerTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->applicationPathResolverMock = $this->createMock(ApplicationPathResolverInterface::class);
         $this->composerMock = $this->createMock(Composer::class);
         $this->ioMock = $this->createMock(IOInterface::class);
         $this->packageEventMock = $this->createMock(PackageEvent::class);
@@ -50,7 +46,6 @@ class PluginInstallerTest extends TestCase
     protected function tearDown(): void
     {
         unset(
-            $this->applicationPathResolverMock,
             $this->composerMock,
             $this->ioMock,
             $this->packageEventMock,
@@ -178,6 +173,6 @@ class PluginInstallerTest extends TestCase
 
         self::assertEquals('installPlugin', $subscribedEvents['post-package-install']);
         self::assertEquals('updatePlugin', $subscribedEvents['post-package-update']);
-        self::assertEquals('uninstallPlugin', $subscribedEvents['post-package-uninstall']);
+        self::assertEquals('uninstallPlugin', $subscribedEvents['pre-package-uninstall']);
     }
 }

@@ -4,17 +4,19 @@ declare(strict_types=1);
 
 namespace Zaphyr\PluginInstallerTests\Unit\Operations;
 
+use Composer\Composer;
+use Composer\IO\IOInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Yaml\Yaml;
-use Zaphyr\Framework\Contracts\ApplicationPathResolverInterface;
 use Zaphyr\PluginInstaller\Operations\PluginClassesOperator;
+use Zaphyr\PluginInstaller\PathResolver;
 use Zaphyr\PluginInstaller\Types\Plugin;
 use Zaphyr\PluginInstaller\Types\PluginUpdate;
 
 class PluginClassesOperatorTest extends TestCase
 {
-    protected ApplicationPathResolverInterface&MockObject $applicationPathResolverMock;
+    protected PathResolver&MockObject $pathResolverMock;
 
     protected Plugin&MockObject $pluginMock;
 
@@ -28,16 +30,20 @@ class PluginClassesOperatorTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->applicationPathResolverMock = $this->createMock(ApplicationPathResolverInterface::class);
+        $this->pathResolverMock = $this->createMock(PathResolver::class);
         $this->pluginMock = $this->createMock(Plugin::class);
         $this->pluginUpdateMock = $this->createMock(PluginUpdate::class);
-        $this->pluginClassesOperator = new PluginClassesOperator($this->applicationPathResolverMock);
+
+        $composerMock = $this->createMock(Composer::class);
+        $ioMock = $this->createMock(IOInterface::class);
+
+        $this->pluginClassesOperator = new PluginClassesOperator($composerMock, $ioMock, $this->pathResolverMock);
     }
 
     protected function tearDown(): void
     {
         unset(
-            $this->applicationPathResolverMock,
+            $this->pathResolverMock,
             $this->pluginMock,
             $this->pluginUpdateMock,
             $this->pluginClassesOperator
@@ -59,7 +65,7 @@ class PluginClassesOperatorTest extends TestCase
 
     public function testInstall(): void
     {
-        $this->applicationPathResolverMock
+        $this->pathResolverMock
             ->method('getConfigPath')
             ->willReturnCallback(fn($key) => match (true) {
                 $key === $this->pluginClassesDir => $this->pluginClassesDir,
@@ -92,7 +98,7 @@ class PluginClassesOperatorTest extends TestCase
 
     public function testUpdate(): void
     {
-        $this->applicationPathResolverMock
+        $this->pathResolverMock
             ->method('getConfigPath')
             ->willReturnCallback(fn($key) => match (true) {
                 $key === $this->pluginClassesDir => $this->pluginClassesDir,
@@ -139,7 +145,7 @@ class PluginClassesOperatorTest extends TestCase
 
     public function testUninstall(): void
     {
-        $this->applicationPathResolverMock
+        $this->pathResolverMock
             ->method('getConfigPath')
             ->willReturnCallback(fn($key) => match (true) {
                 $key === $this->pluginClassesDir => $this->pluginClassesDir,

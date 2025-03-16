@@ -147,7 +147,7 @@ class PluginClassesOperator extends AbstractOperator
      */
     private function getPluginClassesDir(): string
     {
-        return $this->applicationPathResolver->getConfigPath('plugins');
+        return $this->pathResolver->getConfigPath('plugins');
     }
 
     /**
@@ -155,6 +155,6 @@ class PluginClassesOperator extends AbstractOperator
      */
     private function getPluginClassesFile(): string
     {
-        return $this->applicationPathResolver->getConfigPath('plugins/classes.yml');
+        return $this->pathResolver->getConfigPath('plugins/classes.yml');
     }
 }

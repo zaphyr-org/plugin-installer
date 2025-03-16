@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace Zaphyr\PluginInstallerTests\Unit;
 
+use Composer\Composer;
+use Composer\IO\IOInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Zaphyr\Framework\Contracts\ApplicationPathResolverInterface;
 use Zaphyr\PluginInstaller\Operations\PluginClassesOperator;
 use Zaphyr\PluginInstaller\OperationsResolver;
+use Zaphyr\PluginInstaller\PathResolver;
 use Zaphyr\PluginInstaller\Types\Plugin;
 use Zaphyr\PluginInstaller\Types\PluginUpdate;
 
 class OperationsResolverTest extends TestCase
 {
-    protected ApplicationPathResolverInterface&MockObject $applicationPathResolverMock;
-
     protected Plugin&MockObject $pluginMock;
 
     protected PluginUpdate&MockObject $pluginUpdateMock;
@@ -24,18 +24,21 @@ class OperationsResolverTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->applicationPathResolverMock = $this->createMock(ApplicationPathResolverInterface::class);
         $this->pluginMock = $this->createMock(Plugin::class);
         $this->pluginUpdateMock = $this->createMock(PluginUpdate::class);
 
-        $this->operationsResolver = new OperationsResolver($this->applicationPathResolverMock, [
+        $composerMock = $this->createMock(Composer::class);
+        $ioMock = $this->createMock(IOInterface::class);
+        $pathResolverMock = $this->createMock(PathResolver::class);
+
+        $this->operationsResolver = new OperationsResolver($composerMock, $ioMock, $pathResolverMock, [
             'test-operator' => PluginClassesOperator::class,
         ]);
     }
 
     protected function tearDown(): void
     {
-        unset($this->applicationPathResolverMock, $this->pluginMock, $this->pluginUpdateMock, $this->operationsResolver);
+        unset($this->pluginMock, $this->pluginUpdateMock, $this->operationsResolver);
     }
 
     /* -------------------------------------------------

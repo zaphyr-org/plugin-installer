@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Zaphyr\PluginInstaller;
 
-use Zaphyr\Framework\Contracts\ApplicationPathResolverInterface;
+use Composer\Composer;
+use Composer\IO\IOInterface;
 use Zaphyr\PluginInstaller\Operations\AbstractOperator;
+use Zaphyr\PluginInstaller\Operations\CopyOperator;
 use Zaphyr\PluginInstaller\Operations\PluginClassesOperator;
 use Zaphyr\PluginInstaller\Types\Plugin;
 use Zaphyr\PluginInstaller\Types\PluginUpdate;
@@ -20,6 +22,7 @@ class OperationsResolver
      */
     public const DEFAULT_OPERATORS = [
         'plugin-classes' => PluginClassesOperator::class,
+        'copy' => CopyOperator::class,
     ];
 
     /**
@@ -28,11 +31,15 @@ class OperationsResolver
     private array $cachedOperators = [];
 
     /**
-     * @param ApplicationPathResolverInterface              $applicationPathResolver
+     * @param Composer                                      $composer
+     * @param IOInterface                                   $io
+     * @param PathResolver                                  $pathResolver
      * @param array<string, class-string<AbstractOperator>> $operators
      */
     public function __construct(
-        private readonly ApplicationPathResolverInterface $applicationPathResolver,
+        private readonly Composer $composer,
+        private readonly IOInterface $io,
+        private readonly PathResolver $pathResolver,
         private readonly array $operators = self::DEFAULT_OPERATORS
     ) {
     }
@@ -106,7 +113,7 @@ class OperationsResolver
     {
         if (!isset($this->cachedOperators[$operation])) {
             $operatorClass = $this->operators[$operation];
-            $this->cachedOperators[$operation] = new $operatorClass($this->applicationPathResolver);
+            $this->cachedOperators[$operation] = new $operatorClass($this->composer, $this->io, $this->pathResolver);
         }
 
         return $this->cachedOperators[$operation];

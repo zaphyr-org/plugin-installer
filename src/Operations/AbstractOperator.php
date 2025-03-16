@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Zaphyr\PluginInstaller\Operations;
 
-use Zaphyr\Framework\Contracts\ApplicationPathResolverInterface;
+use Composer\Composer;
+use Composer\IO\IOInterface;
+use Zaphyr\PluginInstaller\PathResolver;
 use Zaphyr\PluginInstaller\Types\Plugin;
 use Zaphyr\PluginInstaller\Types\PluginUpdate;
 
@@ -14,10 +16,15 @@ use Zaphyr\PluginInstaller\Types\PluginUpdate;
 abstract class AbstractOperator
 {
     /**
-     * @param ApplicationPathResolverInterface $applicationPathResolver
+     * @param Composer     $composer
+     * @param IOInterface  $io
+     * @param PathResolver $pathResolver
      */
-    public function __construct(protected readonly ApplicationPathResolverInterface $applicationPathResolver)
-    {
+    public function __construct(
+        protected Composer $composer,
+        protected IOInterface $io,
+        protected readonly PathResolver $pathResolver
+    ) {
     }
 
     /**
@@ -40,4 +47,14 @@ abstract class AbstractOperator
      * @return void
      */
     abstract public function uninstall(Plugin $plugin): void;
+
+    /**
+     * @param string $message
+     *
+     * @return void
+     */
+    protected function writeWarning(string $message): void
+    {
+        $this->io->writeError("<warning>$message</warning>");
+    }
 }

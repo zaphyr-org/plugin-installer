@@ -13,7 +13,6 @@ use Composer\Installer\PackageEvent;
 use Composer\Installer\PackageEvents;
 use Composer\IO\IOInterface;
 use Composer\Plugin\PluginInterface;
-use Zaphyr\Framework\ApplicationPathResolver;
 use Zaphyr\Framework\Exceptions\FrameworkException;
 use Zaphyr\PluginInstaller\Types\Plugin;
 use Zaphyr\PluginInstaller\Types\PluginUpdate;
@@ -40,23 +39,23 @@ class PluginInstaller implements PluginInterface, EventSubscriberInterface
      */
     public function activate(Composer $composer, IOInterface $io): void
     {
-        $applicationPathResolver = $this->getApplicationPathResolver($composer);
+        $pathResolver = $this->getPathResolver($composer);
 
-        $this->operationsResolver = new OperationsResolver($applicationPathResolver);
+        $this->operationsResolver = new OperationsResolver($composer, $io, $pathResolver);
     }
 
     /**
      * @param Composer $composer
      *
      * @throws FrameworkException if unable to determine the root path.
-     * @return ApplicationPathResolver
+     * @return PathResolver
      */
-    private function getApplicationPathResolver(Composer $composer): ApplicationPathResolver
+    private function getPathResolver(Composer $composer): PathResolver
     {
         $paths = $composer->getPackage()->getExtra()['zaphyr']['paths'] ?? [];
         $paths['root'] ??= realpath(dirname(Factory::getComposerFile()));
 
-        return new ApplicationPathResolver($paths);
+        return new PathResolver($paths);
     }
 
     /**
@@ -145,7 +144,7 @@ class PluginInstaller implements PluginInterface, EventSubscriberInterface
         return [
             PackageEvents::POST_PACKAGE_INSTALL => 'installPlugin',
             PackageEvents::POST_PACKAGE_UPDATE => 'updatePlugin',
-            PackageEvents::POST_PACKAGE_UNINSTALL => 'uninstallPlugin',
+            PackageEvents::PRE_PACKAGE_UNINSTALL => 'uninstallPlugin',
         ];
     }
 }

@@ -19,6 +19,14 @@ class Plugin
     }
 
     /**
+     * @return PackageInterface
+     */
+    public function getPackage(): PackageInterface
+    {
+        return $this->package;
+    }
+
+    /**
      * @param string $type
      *
      * @return bool
@@ -44,5 +52,13 @@ class Plugin
     public function getClasses(): array
     {
         return $this->getExtra('plugin-classes');
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    public function getCopyPaths(): array
+    {
+        return $this->getExtra('copy');
     }
 }
