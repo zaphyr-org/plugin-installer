@@ -139,7 +139,9 @@ class PluginClassesOperator extends AbstractOperator
             $this->writeWarning("Could not create directory $pluginConfigDir");
         }
 
-        file_put_contents($pluginClassesFile, Yaml::dump($classes));
+        if (!file_put_contents($pluginClassesFile, Yaml::dump($classes))) {
+            $this->writeWarning("Could not write to file $pluginClassesFile");
+        }
     }
 
     /**
