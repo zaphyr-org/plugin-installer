@@ -37,20 +37,6 @@ class PluginTest extends TestCase
     }
 
     /* -------------------------------------------------
-     * HAS EXTRA
-     * -------------------------------------------------
-     */
-
-    public function testHasExtra(): void
-    {
-        $this->packageMock->method('getExtra')
-            ->willReturn(['plugin-classes' => []]);
-
-        self::assertTrue($this->plugin->hasExtra('plugin-classes'));
-        self::assertFalse($this->plugin->hasExtra('foo'));
-    }
-
-    /* -------------------------------------------------
      * GET EXTRA
      * -------------------------------------------------
      */
@@ -75,7 +61,6 @@ class PluginTest extends TestCase
             ->willReturn(['plugin-classes' => ['foo' => 'bar']]);
 
         self::assertSame(['foo' => 'bar'], $this->plugin->getClasses());
-        self::assertSame([], $this->plugin->getExtra('foo'));
     }
 
     /* -------------------------------------------------
@@ -89,6 +74,5 @@ class PluginTest extends TestCase
             ->willReturn(['copy' => ['foo' => 'bar']]);
 
         self::assertSame(['foo' => 'bar'], $this->plugin->getCopyPaths());
-        self::assertSame([], $this->plugin->getExtra('foo'));
     }
 }

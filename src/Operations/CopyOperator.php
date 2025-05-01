@@ -25,6 +25,10 @@ class CopyOperator extends AbstractOperator
      */
     public function install(Plugin $plugin): void
     {
+        if (empty($plugin->getCopyPaths())) {
+            return;
+        }
+
         $this->copyFiles($this->getFiles($plugin));
     }
 
@@ -35,7 +39,13 @@ class CopyOperator extends AbstractOperator
      */
     public function update(PluginUpdate $pluginUpdate): void
     {
-        $this->updateFiles($this->getFiles($pluginUpdate->getNewPlugin()));
+        $plugin = $pluginUpdate->getNewPlugin();
+
+        if (empty($plugin->getCopyPaths())) {
+            return;
+        }
+
+        $this->updateFiles($this->getFiles($plugin));
     }
 
     /**
@@ -45,6 +55,10 @@ class CopyOperator extends AbstractOperator
      */
     public function uninstall(Plugin $plugin): void
     {
+        if (empty($plugin->getCopyPaths())) {
+            return;
+        }
+
         $this->removeFiles($this->getFiles($plugin));
     }
 
@@ -96,6 +110,7 @@ class CopyOperator extends AbstractOperator
      */
     private function getFilesForDir(string $source, string $target): array
     {
+        /** @var RecursiveDirectoryIterator $iterator */
         $iterator = $this->createIterator($source, RecursiveIteratorIterator::SELF_FIRST);
         $files = [];
 
@@ -276,6 +291,7 @@ class CopyOperator extends AbstractOperator
      */
     private function removeFilesFromDir(string $source, string $target): void
     {
+        /** @var RecursiveDirectoryIterator $iterator */
         $iterator = $this->createIterator($source, RecursiveIteratorIterator::CHILD_FIRST);
 
         /** @var SplFileInfo $item */

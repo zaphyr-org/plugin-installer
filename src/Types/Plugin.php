@@ -29,16 +29,6 @@ class Plugin
     /**
      * @param string $type
      *
-     * @return bool
-     */
-    public function hasExtra(string $type): bool
-    {
-        return isset($this->package->getExtra()[$type]);
-    }
-
-    /**
-     * @param string $type
-     *
      * @return mixed[]
      */
     public function getExtra(string $type): array

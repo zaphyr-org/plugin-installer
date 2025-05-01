@@ -133,7 +133,7 @@ class PluginClassesOperatorTest extends TestCase
 
         $pluginConfigData = Yaml::parseFile($this->pluginClassesFile);
 
-        self::assertFalse(in_array('Acme\\DeletedClass', $pluginConfigData['all']));
+        self::assertNotContains('Acme\\DeletedClass', $pluginConfigData['all']);
         self::assertEquals('Acme\\ExistingClass', $pluginConfigData['all'][0]);
         self::assertEquals('Acme\\NewClass', $pluginConfigData['all'][1]);
     }
@@ -161,6 +161,6 @@ class PluginClassesOperatorTest extends TestCase
 
         $this->pluginClassesOperator->uninstall($this->pluginMock);
 
-        self::assertTrue(!file_exists($this->pluginClassesFile));
+        self::assertFileDoesNotExist($this->pluginClassesFile);
     }
 }

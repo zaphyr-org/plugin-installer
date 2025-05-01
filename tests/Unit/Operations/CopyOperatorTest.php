@@ -72,7 +72,7 @@ class CopyOperatorTest extends TestCase
             ->method('getInstallationManager')
             ->willReturn($this->installationManagerMock);
 
-        $this->pluginMock->expects($this->once())
+        $this->pluginMock->expects(self::once())
             ->method('getPackage')
             ->willReturn($this->packageMock);
     }
@@ -102,7 +102,7 @@ class CopyOperatorTest extends TestCase
     {
         $this->setupMockMethods();
 
-        $this->pluginMock->expects(self::once())
+        $this->pluginMock->expects(self::exactly(2))
             ->method('getCopyPaths')
             ->willReturn([
                 'config/' => '%config%',
@@ -122,7 +122,7 @@ class CopyOperatorTest extends TestCase
 
         file_put_contents($this->targetDir . '/overwrite.yaml', 'existing: content');
 
-        $this->pluginMock->expects(self::once())
+        $this->pluginMock->expects(self::exactly(2))
             ->method('getCopyPaths')
             ->willReturn([
                 'config/baz.yaml' => '%config%/overwrite.yaml',
@@ -143,7 +143,7 @@ class CopyOperatorTest extends TestCase
 
         file_put_contents($this->targetDir . '/skip.yaml', 'existing: content');
 
-        $this->pluginMock->expects(self::once())
+        $this->pluginMock->expects(self::exactly(2))
             ->method('getCopyPaths')
             ->willReturn([
                 'config/baz.yaml' => '%config%/skip.yaml',
@@ -164,7 +164,12 @@ class CopyOperatorTest extends TestCase
 
         $package = $this->createMock(PackageInterface::class);
         $pluginMock = $this->createMock(Plugin::class);
-        $pluginMock->expects($this->once())
+        $pluginMock->expects(self::once())
+            ->method('getCopyPaths')
+            ->willReturn([
+                'config/baz.yaml' => '%config%/skip.yaml',
+            ]);
+        $pluginMock->expects(self::once())
             ->method('getPackage')
             ->willReturn($package);
 
@@ -189,7 +194,7 @@ class CopyOperatorTest extends TestCase
 
         $this->expectException(PluginInstallerException::class);
 
-        $this->pluginMock->expects(self::once())
+        $this->pluginMock->expects(self::exactly(2))
             ->method('getCopyPaths')
             ->willReturn([
                 'config/missing.yaml' => '%config%/plugins/missing.yaml',
@@ -207,7 +212,7 @@ class CopyOperatorTest extends TestCase
     {
         $this->setupMockMethods();
 
-        $this->pluginMock->expects(self::once())
+        $this->pluginMock->expects(self::exactly(2))
             ->method('getCopyPaths')
             ->willReturn([
                 'config/' => '%config%',
@@ -231,7 +236,7 @@ class CopyOperatorTest extends TestCase
 
         file_put_contents($this->targetDir . '/overwrite.yaml', 'existing: content');
 
-        $this->pluginMock->expects(self::once())
+        $this->pluginMock->expects(self::exactly(2))
             ->method('getCopyPaths')
             ->willReturn([
                 'config/baz.yaml' => '%config%/overwrite.yaml',
@@ -257,7 +262,7 @@ class CopyOperatorTest extends TestCase
 
         file_put_contents($this->targetDir . '/skip.yaml', 'existing: content');
 
-        $this->pluginMock->expects(self::once())
+        $this->pluginMock->expects(self::exactly(2))
             ->method('getCopyPaths')
             ->willReturn([
                 'config/baz.yaml' => '%config%/skip.yaml',
@@ -282,7 +287,7 @@ class CopyOperatorTest extends TestCase
 
         file_put_contents($this->targetDir . '/baz.yaml', "baz: baz\n");
 
-        $this->pluginMock->expects(self::once())
+        $this->pluginMock->expects(self::exactly(2))
             ->method('getCopyPaths')
             ->willReturn([
                 'config/baz.yaml' => '%config%/baz.yaml',
@@ -309,7 +314,7 @@ class CopyOperatorTest extends TestCase
         mkdir($this->targetDir . '/plugins/subdir', recursive: true);
         file_put_contents($this->targetDir . '/baz.yaml', 'baz: baz');
 
-        $this->pluginMock->expects(self::once())
+        $this->pluginMock->expects(self::exactly(2))
             ->method('getCopyPaths')
             ->willReturn([
                 'config/' => '%config%',

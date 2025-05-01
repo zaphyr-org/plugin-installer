@@ -83,25 +83,8 @@ class OperationsResolver
     private function executeOperation(Plugin|PluginUpdate $target, string $operation): void
     {
         foreach (array_keys($this->operators) as $operator) {
-            if ($this->shouldExecuteOperation($target, $operator)) {
-                $this->getOperator($operator)->$operation($target);
-            }
+            $this->getOperator($operator)->$operation($target);
         }
-    }
-
-    /**
-     * @param Plugin|PluginUpdate $target
-     * @param string              $operator
-     *
-     * @return bool
-     */
-    private function shouldExecuteOperation(Plugin|PluginUpdate $target, string $operator): bool
-    {
-        if ($target instanceof Plugin) {
-            return $target->hasExtra($operator);
-        }
-
-        return $target->getCurrentPlugin()->hasExtra($operator) && $target->getNewPlugin()->hasExtra($operator);
     }
 
     /**

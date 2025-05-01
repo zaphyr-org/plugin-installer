@@ -27,7 +27,10 @@ class PathResolver extends ApplicationPathResolver
 
         return array_reduce(
             $paths,
-            fn(string $initialPath, string $nextPath): string => rtrim($initialPath, '/') . '/' . ltrim($nextPath, '/'),
+            static fn(string $initialPath, string $nextPath): string => rtrim($initialPath, '/') . '/' . ltrim(
+                $nextPath,
+                '/'
+            ),
             $firstPath
         );
     }
