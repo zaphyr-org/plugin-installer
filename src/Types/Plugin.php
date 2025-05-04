@@ -41,7 +41,7 @@ class Plugin
      */
     public function getExtra(string $type): array
     {
-        return $this->package->getExtra()[$type] ?? [];
+        return $this->package->getExtra()['zaphyr'][$type] ?? [];
     }
 
     /**

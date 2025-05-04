@@ -57,7 +57,7 @@ class PluginTest extends TestCase
     public function testGetExtra(): void
     {
         $this->packageMock->method('getExtra')
-            ->willReturn(['plugin-classes' => ['foo' => 'bar']]);
+            ->willReturn(['zaphyr' => ['plugin-classes' => ['foo' => 'bar']]]);
 
         self::assertSame(['foo' => 'bar'], $this->plugin->getExtra('plugin-classes'));
         self::assertSame([], $this->plugin->getExtra('foo'));
@@ -71,7 +71,7 @@ class PluginTest extends TestCase
     public function testGetClasses(): void
     {
         $this->packageMock->method('getExtra')
-            ->willReturn(['plugin-classes' => ['foo' => 'bar']]);
+            ->willReturn(['zaphyr' => ['plugin-classes' => ['foo' => 'bar']]]);
 
         self::assertSame(['foo' => 'bar'], $this->plugin->getClasses());
     }
@@ -84,7 +84,7 @@ class PluginTest extends TestCase
     public function testGetCopyPaths(): void
     {
         $this->packageMock->method('getExtra')
-            ->willReturn(['copy' => ['foo' => 'bar']]);
+            ->willReturn(['zaphyr' => ['copy' => ['foo' => 'bar']]]);
 
         self::assertSame(['foo' => 'bar'], $this->plugin->getCopyPaths());
     }
@@ -97,7 +97,7 @@ class PluginTest extends TestCase
     public function testGetEnvVars(): void
     {
         $this->packageMock->method('getExtra')
-            ->willReturn(['env' => ['foo' => 'bar']]);
+            ->willReturn(['zaphyr' => ['env' => ['foo' => 'bar']]]);
 
         self::assertSame(['foo' => 'bar'], $this->plugin->getEnvVars());
     }
