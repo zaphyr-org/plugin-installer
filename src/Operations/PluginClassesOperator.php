@@ -54,7 +54,7 @@ class PluginClassesOperator extends AbstractOperator
     /**
      * @return array<string, string[]>
      */
-    private function getExistingClasses(): array
+    protected function getExistingClasses(): array
     {
         $pluginClassesFile = $this->getPluginClassesFile();
 
@@ -67,7 +67,7 @@ class PluginClassesOperator extends AbstractOperator
      *
      * @return array<string, string[]>
      */
-    private function addClasses(array $existingClasses, array $pluginClasses): array
+    protected function addClasses(array $existingClasses, array $pluginClasses): array
     {
         foreach ($pluginClasses as $class => $environments) {
             foreach ($environments as $environment) {
@@ -91,7 +91,7 @@ class PluginClassesOperator extends AbstractOperator
      *
      * @return array<string, string[]>
      */
-    private function removeClasses(array $existingClasses, array $pluginClasses): array
+    protected function removeClasses(array $existingClasses, array $pluginClasses): array
     {
         foreach ($pluginClasses as $class => $environments) {
             foreach ($environments as $environment) {
@@ -114,7 +114,7 @@ class PluginClassesOperator extends AbstractOperator
      *
      * @return string
      */
-    private function prepareClass(string $class): string
+    protected function prepareClass(string $class): string
     {
         return trim($class, '\\');
     }
@@ -124,7 +124,7 @@ class PluginClassesOperator extends AbstractOperator
      *
      * @return void
      */
-    private function processConfigFile(array $classes): void
+    protected function processConfigFile(array $classes): void
     {
         $pluginConfigDir = $this->getPluginClassesDir();
         $pluginClassesFile = $this->getPluginClassesFile();
@@ -147,7 +147,7 @@ class PluginClassesOperator extends AbstractOperator
     /**
      * @return string
      */
-    private function getPluginClassesDir(): string
+    protected function getPluginClassesDir(): string
     {
         return $this->pathResolver->getConfigPath('plugins');
     }
@@ -155,7 +155,7 @@ class PluginClassesOperator extends AbstractOperator
     /**
      * @return string
      */
-    private function getPluginClassesFile(): string
+    protected function getPluginClassesFile(): string
     {
         return $this->pathResolver->getConfigPath('plugins/classes.yml');
     }

@@ -68,7 +68,7 @@ class CopyOperator extends AbstractOperator
      * @throws PluginInstallerException if unable to determine plugin directory
      * @return array<string, string>
      */
-    private function getFiles(Plugin $plugin): array
+    protected function getFiles(Plugin $plugin): array
     {
         $pluginDir = $this->getPluginDirectory($plugin);
         $files = [];
@@ -91,7 +91,7 @@ class CopyOperator extends AbstractOperator
      * @throws PluginInstallerException if unable to determine plugin directory
      * @return string
      */
-    private function getPluginDirectory(Plugin $plugin): string
+    protected function getPluginDirectory(Plugin $plugin): string
     {
         $pluginDir = $this->composer->getInstallationManager()->getInstallPath($plugin->getPackage());
 
@@ -108,7 +108,7 @@ class CopyOperator extends AbstractOperator
      *
      * @return array<string, string>
      */
-    private function getFilesForDir(string $source, string $target): array
+    protected function getFilesForDir(string $source, string $target): array
     {
         /** @var RecursiveDirectoryIterator $iterator */
         $iterator = $this->createIterator($source, RecursiveIteratorIterator::SELF_FIRST);
@@ -128,7 +128,7 @@ class CopyOperator extends AbstractOperator
      *
      * @return RecursiveIteratorIterator<RecursiveDirectoryIterator>
      */
-    private function createIterator(string $source, int $mode): RecursiveIteratorIterator
+    protected function createIterator(string $source, int $mode): RecursiveIteratorIterator
     {
         return new RecursiveIteratorIterator(
             new RecursiveDirectoryIterator($source, FilesystemIterator::SKIP_DOTS),
@@ -142,7 +142,7 @@ class CopyOperator extends AbstractOperator
      * @throws PluginInstallerException if source file does not exist
      * @return void
      */
-    private function copyFiles(array $files): void
+    protected function copyFiles(array $files): void
     {
         foreach ($files as $source => $target) {
             if (is_dir($source)) {
@@ -166,7 +166,7 @@ class CopyOperator extends AbstractOperator
      * @throws PluginInstallerException if source file does not exist
      * @return void
      */
-    private function validateSource(string $source): void
+    protected function validateSource(string $source): void
     {
         if (!file_exists($source)) {
             throw new PluginInstallerException("File '$source' does not exist");
@@ -178,7 +178,7 @@ class CopyOperator extends AbstractOperator
      *
      * @return bool
      */
-    private function shouldSkipCopy(string $target): bool
+    protected function shouldSkipCopy(string $target): bool
     {
         return file_exists($target) && !$this->confirmOverwrite($target, 'already exists');
     }
@@ -189,7 +189,7 @@ class CopyOperator extends AbstractOperator
      *
      * @return bool
      */
-    private function confirmOverwrite(string $target, string $reason): bool
+    protected function confirmOverwrite(string $target, string $reason): bool
     {
         return $this->io->askConfirmation("File <fg=yellow>$target</> $reason, overwrite? [Y/n] ", false);
     }
@@ -199,7 +199,7 @@ class CopyOperator extends AbstractOperator
      *
      * @return void
      */
-    private function ensureTargetDirectory(string $target): void
+    protected function ensureTargetDirectory(string $target): void
     {
         $targetDir = dirname($target);
 
@@ -214,7 +214,7 @@ class CopyOperator extends AbstractOperator
      *
      * @return void
      */
-    private function performCopy(string $source, string $target): void
+    protected function performCopy(string $source, string $target): void
     {
         if (!File::copy($source, $target)) {
             $this->writeWarning("Could not copy file $source to $target");
@@ -227,7 +227,7 @@ class CopyOperator extends AbstractOperator
      * @throws PluginInstallerException if source file does not exist
      * @return void
      */
-    private function updateFiles(array $files): void
+    protected function updateFiles(array $files): void
     {
         foreach ($files as $source => $target) {
             if (is_dir($source)) {
@@ -251,7 +251,7 @@ class CopyOperator extends AbstractOperator
      *
      * @return bool
      */
-    private function shouldUpdateFile(string $source, string $target): bool
+    protected function shouldUpdateFile(string $source, string $target): bool
     {
         if (!file_exists($target)) {
             return true;
@@ -269,7 +269,7 @@ class CopyOperator extends AbstractOperator
      *
      * @return void
      */
-    private function removeFiles(array $files): void
+    protected function removeFiles(array $files): void
     {
         foreach ($files as $source => $target) {
             if (is_dir($source)) {
@@ -289,7 +289,7 @@ class CopyOperator extends AbstractOperator
      *
      * @return void
      */
-    private function removeFilesFromDir(string $source, string $target): void
+    protected function removeFilesFromDir(string $source, string $target): void
     {
         /** @var RecursiveDirectoryIterator $iterator */
         $iterator = $this->createIterator($source, RecursiveIteratorIterator::CHILD_FIRST);

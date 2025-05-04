@@ -30,7 +30,7 @@ class OperationsResolver
     /**
      * @var array<string, AbstractOperator>
      */
-    private array $cachedOperators = [];
+    protected array $cachedOperators = [];
 
     /**
      * @param Composer                                      $composer
@@ -39,10 +39,10 @@ class OperationsResolver
      * @param array<string, class-string<AbstractOperator>> $operators
      */
     public function __construct(
-        private readonly Composer $composer,
-        private readonly IOInterface $io,
-        private readonly PathResolver $pathResolver,
-        private readonly array $operators = self::DEFAULT_OPERATORS
+        protected readonly Composer $composer,
+        protected readonly IOInterface $io,
+        protected readonly PathResolver $pathResolver,
+        protected readonly array $operators = self::DEFAULT_OPERATORS
     ) {
     }
 
@@ -82,7 +82,7 @@ class OperationsResolver
      *
      * @return void
      */
-    private function executeOperation(Plugin|PluginUpdate $target, string $operation): void
+    protected function executeOperation(Plugin|PluginUpdate $target, string $operation): void
     {
         foreach (array_keys($this->operators) as $operator) {
             $this->getOperator($operator)->$operation($target);
@@ -94,7 +94,7 @@ class OperationsResolver
      *
      * @return AbstractOperator
      */
-    private function getOperator(string $operation): AbstractOperator
+    protected function getOperator(string $operation): AbstractOperator
     {
         if (!isset($this->cachedOperators[$operation])) {
             $operatorClass = $this->operators[$operation];

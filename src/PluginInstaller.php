@@ -25,12 +25,12 @@ class PluginInstaller implements PluginInterface, EventSubscriberInterface
     /**
      * @const string
      */
-    private const ZAPHYR_PLUGIN_TYPE = 'zaphyr-plugin';
+    protected const ZAPHYR_PLUGIN_TYPE = 'zaphyr-plugin';
 
     /**
      * @var OperationsResolver
      */
-    private OperationsResolver $operationsResolver;
+    protected OperationsResolver $operationsResolver;
 
     /**
      * {@inheritdoc}
@@ -50,7 +50,7 @@ class PluginInstaller implements PluginInterface, EventSubscriberInterface
      * @throws FrameworkException if unable to determine the root path.
      * @return PathResolver
      */
-    private function getPathResolver(Composer $composer): PathResolver
+    protected function getPathResolver(Composer $composer): PathResolver
     {
         $paths = $composer->getPackage()->getExtra()['zaphyr']['paths'] ?? [];
         $paths['root'] ??= realpath(dirname(Factory::getComposerFile()));
@@ -123,7 +123,7 @@ class PluginInstaller implements PluginInterface, EventSubscriberInterface
      *
      * @return void
      */
-    private function execute(PackageEvent $event, string $type): void
+    protected function execute(PackageEvent $event, string $type): void
     {
         /** @var InstallOperation $operation */
         $operation = $event->getOperation();

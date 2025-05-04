@@ -14,7 +14,7 @@ class Plugin
     /**
      * @param PackageInterface $package
      */
-    public function __construct(private readonly PackageInterface $package)
+    public function __construct(protected readonly PackageInterface $package)
     {
     }
 

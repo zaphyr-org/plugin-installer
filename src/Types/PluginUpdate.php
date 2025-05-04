@@ -13,7 +13,7 @@ class PluginUpdate
      * @param Plugin $currentPlugin
      * @param Plugin $newPlugin
      */
-    public function __construct(private readonly Plugin $currentPlugin, private readonly Plugin $newPlugin)
+    public function __construct(protected readonly Plugin $currentPlugin, protected readonly Plugin $newPlugin)
     {
     }
 

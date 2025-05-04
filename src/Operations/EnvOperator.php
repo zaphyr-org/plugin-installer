@@ -16,17 +16,17 @@ class EnvOperator extends AbstractOperator
     /**
      * @var string[]
      */
-    private const ENV_FILES = ['.env', '.env.dist'];
+    protected const ENV_FILES = ['.env', '.env.dist'];
 
     /**
      * @var string
      */
-    private const ENV_BLOCK_START = '### start-plugin-config:%s ###';
+    protected const ENV_BLOCK_START = '### start-plugin-config:%s ###';
 
     /**
      * @var string
      */
-    private const ENV_BLOCK_END = '### end-plugin-config:%s ###';
+    protected const ENV_BLOCK_END = '### end-plugin-config:%s ###';
 
     /**
      * {@inheritdoc}
@@ -95,7 +95,7 @@ class EnvOperator extends AbstractOperator
      * @throws PluginInstallerException if the path contains an invalid key or the env file cannot be read
      * @return void
      */
-    private function process(Plugin $plugin, bool $update = false): void
+    protected function process(Plugin $plugin, bool $update = false): void
     {
         foreach ($this->getEnvFilePaths() as $envFile) {
             if (!file_exists($envFile)) {
@@ -124,7 +124,7 @@ class EnvOperator extends AbstractOperator
      * @throws PluginInstallerException if the path contains an invalid key
      * @return string
      */
-    private function formatData(Plugin $plugin, string $contents): string
+    protected function formatData(Plugin $plugin, string $contents): string
     {
         $lines = [];
         $pluginName = $plugin->getName();
@@ -152,7 +152,7 @@ class EnvOperator extends AbstractOperator
      *
      * @return string|null
      */
-    private function extractExistingValue(string $pluginName, string $contents, string $key): ?string
+    protected function extractExistingValue(string $pluginName, string $contents, string $key): ?string
     {
         $startTag = preg_quote(sprintf(self::ENV_BLOCK_START, $pluginName), '/');
         $endTag = preg_quote(sprintf(self::ENV_BLOCK_END, $pluginName), '/');
@@ -178,7 +178,7 @@ class EnvOperator extends AbstractOperator
      * @throws PluginInstallerException if the env file cannot be read
      * @return bool
      */
-    private function updateBlock(string $file, string $data): bool
+    protected function updateBlock(string $file, string $data): bool
     {
         $contents = $this->readEnvFileContents($file);
         $updatedData = $this->updateBlockContents($contents, $data);
@@ -198,7 +198,7 @@ class EnvOperator extends AbstractOperator
      *
      * @return string|null
      */
-    private function updateBlockContents(string $contents, string $data): ?string
+    protected function updateBlockContents(string $contents, string $data): ?string
     {
         $pieces = explode("\n", trim($data));
         $startTag = trim(reset($pieces));
@@ -216,7 +216,7 @@ class EnvOperator extends AbstractOperator
     /**
      * @return string[]
      */
-    private function getEnvFilePaths(): array
+    protected function getEnvFilePaths(): array
     {
         return array_map(fn(string $file) => $this->pathResolver->getRootPath($file), self::ENV_FILES);
     }
@@ -227,7 +227,7 @@ class EnvOperator extends AbstractOperator
      * @throws PluginInstallerException if the env file cannot be read
      * @return string
      */
-    private function readEnvFileContents(string $envFile): string
+    protected function readEnvFileContents(string $envFile): string
     {
         $contents = file_get_contents($envFile);
 
