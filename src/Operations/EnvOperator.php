@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Zaphyr\PluginInstaller\Operations;
 
 use Zaphyr\PluginInstaller\Exceptions\PluginInstallerException;
-use Zaphyr\PluginInstaller\Types\Plugin;
-use Zaphyr\PluginInstaller\Types\PluginUpdate;
+use Zaphyr\PluginInstaller\Plugin;
+use Zaphyr\PluginInstaller\PluginUpdate;
 
 /**
  * @author merloxx <merloxx@zaphyr.org>

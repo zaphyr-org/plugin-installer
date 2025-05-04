@@ -10,8 +10,6 @@ use Zaphyr\PluginInstaller\Operations\AbstractOperator;
 use Zaphyr\PluginInstaller\Operations\CopyOperator;
 use Zaphyr\PluginInstaller\Operations\EnvOperator;
 use Zaphyr\PluginInstaller\Operations\PluginClassesOperator;
-use Zaphyr\PluginInstaller\Types\Plugin;
-use Zaphyr\PluginInstaller\Types\PluginUpdate;
 
 /**
  * @author merloxx <merloxx@zaphyr.org>

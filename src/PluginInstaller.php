@@ -14,8 +14,6 @@ use Composer\Installer\PackageEvents;
 use Composer\IO\IOInterface;
 use Composer\Plugin\PluginInterface;
 use Zaphyr\Framework\Exceptions\FrameworkException;
-use Zaphyr\PluginInstaller\Types\Plugin;
-use Zaphyr\PluginInstaller\Types\PluginUpdate;
 
 /**
  * @author merloxx <merloxx@zaphyr.org>

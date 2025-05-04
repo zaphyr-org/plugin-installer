@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Zaphyr\PluginInstallerTests\Unit\Types;
+namespace Zaphyr\PluginInstallerTests\Unit;
 
 use Composer\Package\PackageInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Zaphyr\PluginInstaller\Types\Plugin;
+use Zaphyr\PluginInstaller\Plugin;
 
 class PluginTest extends TestCase
 {

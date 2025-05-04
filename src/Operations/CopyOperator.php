@@ -9,8 +9,8 @@ use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use SplFileInfo;
 use Zaphyr\PluginInstaller\Exceptions\PluginInstallerException;
-use Zaphyr\PluginInstaller\Types\Plugin;
-use Zaphyr\PluginInstaller\Types\PluginUpdate;
+use Zaphyr\PluginInstaller\Plugin;
+use Zaphyr\PluginInstaller\PluginUpdate;
 use Zaphyr\Utils\File;
 
 /**

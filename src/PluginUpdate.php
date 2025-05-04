@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Zaphyr\PluginInstaller\Types;
+namespace Zaphyr\PluginInstaller;
 
 /**
  * @author merloxx <merloxx@zaphyr.org>

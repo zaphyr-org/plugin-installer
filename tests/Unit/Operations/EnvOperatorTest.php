@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Zaphyr\PluginInstallerTests\Operations;
+namespace Zaphyr\PluginInstallerTests\Unit\Operations;
 
 use Composer\Composer;
 use Composer\IO\IOInterface;
@@ -10,8 +10,8 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Zaphyr\PluginInstaller\Operations\EnvOperator;
 use Zaphyr\PluginInstaller\PathResolver;
-use Zaphyr\PluginInstaller\Types\Plugin;
-use Zaphyr\PluginInstaller\Types\PluginUpdate;
+use Zaphyr\PluginInstaller\Plugin;
+use Zaphyr\PluginInstaller\PluginUpdate;
 
 class EnvOperatorTest extends TestCase
 {

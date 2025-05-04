@@ -11,8 +11,8 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\Yaml\Yaml;
 use Zaphyr\PluginInstaller\Operations\PluginClassesOperator;
 use Zaphyr\PluginInstaller\PathResolver;
-use Zaphyr\PluginInstaller\Types\Plugin;
-use Zaphyr\PluginInstaller\Types\PluginUpdate;
+use Zaphyr\PluginInstaller\Plugin;
+use Zaphyr\PluginInstaller\PluginUpdate;
 
 class PluginClassesOperatorTest extends TestCase
 {

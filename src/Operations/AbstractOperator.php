@@ -7,8 +7,8 @@ namespace Zaphyr\PluginInstaller\Operations;
 use Composer\Composer;
 use Composer\IO\IOInterface;
 use Zaphyr\PluginInstaller\PathResolver;
-use Zaphyr\PluginInstaller\Types\Plugin;
-use Zaphyr\PluginInstaller\Types\PluginUpdate;
+use Zaphyr\PluginInstaller\Plugin;
+use Zaphyr\PluginInstaller\PluginUpdate;
 
 /**
  * @author merloxx <merloxx@zaphyr.org>
