@@ -8,6 +8,7 @@ use Composer\Composer;
 use Composer\IO\IOInterface;
 use Zaphyr\PluginInstaller\Operations\AbstractOperator;
 use Zaphyr\PluginInstaller\Operations\CopyOperator;
+use Zaphyr\PluginInstaller\Operations\EnvOperator;
 use Zaphyr\PluginInstaller\Operations\PluginClassesOperator;
 use Zaphyr\PluginInstaller\Types\Plugin;
 use Zaphyr\PluginInstaller\Types\PluginUpdate;
@@ -23,6 +24,7 @@ class OperationsResolver
     public const DEFAULT_OPERATORS = [
         'plugin-classes' => PluginClassesOperator::class,
         'copy' => CopyOperator::class,
+        'env' => EnvOperator::class,
     ];
 
     /**

@@ -27,6 +27,14 @@ class Plugin
     }
 
     /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->package->getName();
+    }
+
+    /**
      * @param string $type
      *
      * @return mixed[]
@@ -50,5 +58,13 @@ class Plugin
     public function getCopyPaths(): array
     {
         return $this->getExtra('copy');
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    public function getEnvVars(): array
+    {
+        return $this->getExtra('env');
     }
 }

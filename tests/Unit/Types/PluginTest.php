@@ -37,6 +37,19 @@ class PluginTest extends TestCase
     }
 
     /* -------------------------------------------------
+     * GET NAME
+     * -------------------------------------------------
+     */
+
+    public function testGetName(): void
+    {
+        $this->packageMock->method('getName')
+            ->willReturn('foo/bar');
+
+        self::assertSame('foo/bar', $this->plugin->getName());
+    }
+
+    /* -------------------------------------------------
      * GET EXTRA
      * -------------------------------------------------
      */
@@ -74,5 +87,18 @@ class PluginTest extends TestCase
             ->willReturn(['copy' => ['foo' => 'bar']]);
 
         self::assertSame(['foo' => 'bar'], $this->plugin->getCopyPaths());
+    }
+
+    /* -------------------------------------------------
+     * GET ENV VARS
+     * -------------------------------------------------
+     */
+
+    public function testGetEnvVars(): void
+    {
+        $this->packageMock->method('getExtra')
+            ->willReturn(['env' => ['foo' => 'bar']]);
+
+        self::assertSame(['foo' => 'bar'], $this->plugin->getEnvVars());
     }
 }
