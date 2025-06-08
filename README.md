@@ -22,7 +22,7 @@ composer require zaphyr-org/plugin-installer
 
 ## Documentation
 
-You can read the full documentation [here](https://zaphyr.org/docs/framework/latest/plugins).
+You can read the full documentation [here](https://zaphyr.org/docs/plugins/latest/overview).
 
 ## Changelog
 
@@ -30,7 +30,8 @@ Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed re
 
 ## Issues
 
-Bug reports and feature requests can be submitted on the [GitHub Issue Tracker](https://github.com/zaphyr-org/plugin-installer/issues).
+Bug reports and feature requests can be submitted on
+the [GitHub Issue Tracker](https://github.com/zaphyr-org/plugin-installer/issues).
 
 ## Security
 
