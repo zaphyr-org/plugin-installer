@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Zaphyr\PluginInstallerTests\Unit;
 
+use Composer\Factory;
 use PHPUnit\Framework\TestCase;
 use Zaphyr\PluginInstaller\Exceptions\PluginInstallerException;
 use Zaphyr\PluginInstaller\PathResolver;
@@ -14,7 +15,15 @@ class PathResolverTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->pathResolver = new PathResolver([]);
+        $this->pathResolver = new PathResolver([
+            'root' => realpath(dirname(Factory::getComposerFile())),
+            'app' => 'app/',
+            'bin' => 'bin/',
+            'config' => 'config/',
+            'public' => 'public/',
+            'resources' => 'resources/',
+            'storage' => 'storage/',
+        ]);
     }
 
     protected function tearDown(): void
@@ -34,7 +43,7 @@ class PathResolverTest extends TestCase
 
     public function testConcatEmpty(): void
     {
-        self::assertNull($this->pathResolver->concat());
+        self::assertEquals('', $this->pathResolver->concat());
     }
 
     /* -------------------------------------------------

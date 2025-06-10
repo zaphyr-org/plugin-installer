@@ -28,8 +28,7 @@
         "phpstan/phpstan": "^1.10",
         "phpunit/phpunit": "^10.0",
         "roave/security-advisories": "dev-latest",
-        "squizlabs/php_codesniffer": "^4.0",
-        "zaphyr-org/framework": "^1.0@alpha"
+        "squizlabs/php_codesniffer": "^4.0"
     },
     "autoload": {
         "psr-4": {

@@ -4,30 +4,49 @@ declare(strict_types=1);
 
 namespace Zaphyr\PluginInstaller;
 
-use Zaphyr\Framework\ApplicationPathResolver;
 use Zaphyr\PluginInstaller\Exceptions\PluginInstallerException;
 
 /**
  * @author merloxx <merloxx@zaphyr.org>
  */
-class PathResolver extends ApplicationPathResolver
+class PathResolver
 {
+    /**
+     * @var array<string, string>
+     */
+    protected array $paths = [
+        'app' => 'app/',
+        'bin' => 'bin/',
+        'config' => 'config/',
+        'public' => 'public/',
+        'resources' => 'resources/',
+        'storage' => 'storage/',
+    ];
+
+    /**
+     * @param string[] $paths
+     */
+    public function __construct(array $paths)
+    {
+        $this->paths = array_merge($this->paths, $paths);
+    }
+
     /**
      * @param string ...$paths
      *
-     * @return string|null
+     * @return string
      */
-    public function concat(string ...$paths): ?string
+    public function concat(string ...$paths): string
     {
         if (empty($paths)) {
-            return null;
+            return '';
         }
 
         $firstPath = array_shift($paths);
 
         return array_reduce(
             $paths,
-            static fn(string $initialPath, string $nextPath): string => rtrim($initialPath, '/') . '/' . ltrim(
+            static fn(string $initialPath, string $nextPath): string => rtrim($initialPath, '/') . '/' . trim(
                 $nextPath,
                 '/'
             ),
@@ -43,13 +62,20 @@ class PathResolver extends ApplicationPathResolver
      */
     public function resolve(string $path): string
     {
-        foreach (array_keys($this->paths) as $searchString) {
-            $methodName = 'get' . ucfirst($searchString) . 'Path';
-            $path = str_replace("%$searchString%", $this->{$methodName}(), $path);
-        }
+        if (preg_match('/%([^%]+)%/', $path, $match)) {
+            [$placeholder, $key] = $match;
 
-        if (preg_match('/%([^%]+)%/', $path, $matches)) {
-            throw new PluginInstallerException("'$matches[1]' is not a valid path resolver key.");
+            if (!isset($this->paths[$key])) {
+                throw new PluginInstallerException("'$key' is not a valid path resolver key.");
+            }
+
+            if ($key !== 'root') {
+                $tempPath = str_replace($placeholder, trim($this->paths[$key], '/'), $path);
+
+                return $this->concat($this->paths['root'], $tempPath);
+            }
+
+            return str_replace($placeholder, $this->paths[$key], $path);
         }
 
         return $path;

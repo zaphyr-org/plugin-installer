@@ -218,7 +218,7 @@ class EnvOperator extends AbstractOperator
      */
     protected function getEnvFilePaths(): array
     {
-        return array_map(fn(string $file) => $this->pathResolver->getRootPath($file), self::ENV_FILES);
+        return array_map(fn(string $file) => $this->pathResolver->resolve("%root%/$file"), self::ENV_FILES);
     }
 
     /**

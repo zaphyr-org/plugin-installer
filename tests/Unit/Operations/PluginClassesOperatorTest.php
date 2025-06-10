@@ -66,10 +66,10 @@ class PluginClassesOperatorTest extends TestCase
     public function testInstall(): void
     {
         $this->pathResolverMock
-            ->method('getConfigPath')
+            ->method('resolve')
             ->willReturnCallback(fn($key) => match (true) {
-                $key === $this->pluginClassesDir => $this->pluginClassesDir,
-                $key === $this->pluginClassesFile => $this->pluginClassesFile
+                $key === '%config%/' . $this->pluginClassesDir => $this->pluginClassesDir,
+                $key === '%config%/' . $this->pluginClassesFile => $this->pluginClassesFile
             });
 
         $this->pluginMock->expects(self::once())
@@ -99,10 +99,10 @@ class PluginClassesOperatorTest extends TestCase
     public function testUpdate(): void
     {
         $this->pathResolverMock
-            ->method('getConfigPath')
+            ->method('resolve')
             ->willReturnCallback(fn($key) => match (true) {
-                $key === $this->pluginClassesDir => $this->pluginClassesDir,
-                $key === $this->pluginClassesFile => $this->pluginClassesFile
+                $key === '%config%/' . $this->pluginClassesDir => $this->pluginClassesDir,
+                $key === '%config%/' . $this->pluginClassesFile => $this->pluginClassesFile
             });
 
         $currentPluginMock = $this->pluginMock;
@@ -146,10 +146,10 @@ class PluginClassesOperatorTest extends TestCase
     public function testUninstall(): void
     {
         $this->pathResolverMock
-            ->method('getConfigPath')
+            ->method('resolve')
             ->willReturnCallback(fn($key) => match (true) {
-                $key === $this->pluginClassesDir => $this->pluginClassesDir,
-                $key === $this->pluginClassesFile => $this->pluginClassesFile
+                $key === '%config%/' . $this->pluginClassesDir => $this->pluginClassesDir,
+                $key === '%config%/' . $this->pluginClassesFile => $this->pluginClassesFile
             });
 
         $this->pluginMock->expects(self::once())

@@ -13,7 +13,6 @@ use Composer\Installer\PackageEvent;
 use Composer\Installer\PackageEvents;
 use Composer\IO\IOInterface;
 use Composer\Plugin\PluginInterface;
-use Zaphyr\Framework\Exceptions\FrameworkException;
 
 /**
  * @author merloxx <merloxx@zaphyr.org>
@@ -32,8 +31,6 @@ class PluginInstaller implements PluginInterface, EventSubscriberInterface
 
     /**
      * {@inheritdoc}
-     *
-     * @throws FrameworkException if unable to determine the root path.
      */
     public function activate(Composer $composer, IOInterface $io): void
     {
@@ -45,7 +42,6 @@ class PluginInstaller implements PluginInterface, EventSubscriberInterface
     /**
      * @param Composer $composer
      *
-     * @throws FrameworkException if unable to determine the root path.
      * @return PathResolver
      */
     protected function getPathResolver(Composer $composer): PathResolver
